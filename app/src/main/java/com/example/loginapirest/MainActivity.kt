@@ -3,7 +3,10 @@ package com.example.loginapirest
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
 import com.example.loginapirest.databinding.ActivityMainBinding
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,7 +26,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun login() {
-        updateUI("(^_^)")
+        val typeMethod =
+            if (mBinding.swType.isChecked) Constants.LOGIN_PATH else Constants.REGISTER_PATH
+
+        val url = Constants.BASE_URL + Constants.API_PATH + typeMethod
+
+        val jsonParams = JSONObject()
+        val jsonObjectRequest = object : JsonObjectRequest(Request.Method.POST, url, jsonParams, {
+            updateUI("(^_^)")
+        }, {
+            it.printStackTrace()
+            if (it.networkResponse.statusCode == 400) {
+                updateUI(getString(R.string.name_error_server))
+            }
+        }) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val params = HashMap<String, String>()
+                params["Content-Type"] = "application/json"
+
+                return params
+            }
+
+        }
+        LoginApplication.reqresAPI.addToRequestQueue(jsonObjectRequest)
+
     }
 
     private fun updateUI(result: String) {
