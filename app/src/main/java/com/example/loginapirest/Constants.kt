@@ -1,10 +1,10 @@
 package com.example.loginapirest
 
 object Constants {
-    const val BASE_URL = "https://reqres.in/"
+    const val BASE_URL = "https://reqres.in"
     const val API_PATH = "/api"
     const val REGISTER_PATH = "/register"
-    const val LOGIN_PATH = "login"
+    const val LOGIN_PATH = "/login"
 
     const val EMAIL_PARAM = "email"
     const val PASSWORD_PARAM = "password"
